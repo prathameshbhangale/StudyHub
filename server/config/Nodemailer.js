@@ -1,8 +1,10 @@
 import nodemailer from 'nodemailer'
 
+let transporter
+
 const maileFunctionalityAdd = () => {
     try {
-        const transporter = nodemailer.createTransport({
+        transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: process.env.EMAIL_ADDRESS,
@@ -13,5 +15,6 @@ const maileFunctionalityAdd = () => {
         console.log('error in mail connect / Nodemailer.js ',err)
     }
 }
+export {transporter}
 
 export default maileFunctionalityAdd
