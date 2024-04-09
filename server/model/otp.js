@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { transporter } from "../config/Nodemailer"
+import sendMail from "../utlity/mailSend"
 
 const OTPSchema = new mongoose.Schema({
     email: {
@@ -17,7 +17,16 @@ const OTPSchema = new mongoose.Schema({
     },
 })
 
-
+OTPSchema.pre('save', async function(next) {
+    try {
+        console.log('Document is ready to save')
+        await sendMail(this.email, "Verification by Edutech", mailhtml(this.otp))
+        next()
+    } catch (error) {
+        console.error('Error sending email:', error)
+        next(error)
+    }
+})
 
 const OTP = mongoose.model("OTP", OTPSchema)
 
