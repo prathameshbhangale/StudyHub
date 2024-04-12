@@ -1,0 +1,49 @@
+import jwt from 'jsonwebtoken'
+import User from '../model/user';
+
+function decodeToken(token) {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return decoded;
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            console.error('Token is expired');
+            return null;
+        } else {
+            console.error('Error decoding token:', error);
+            return null;
+        }
+    }
+}
+
+// token payload = {id, email, accountType}
+// validation part of token
+// either present in cookie or body or authentation
+const auth = async(req,res,next) => {
+    try {
+        let token = req.body || req.cookies.token || req.header('Authorization')
+        if(!token){
+            return res.status(400).json({
+                success:false,
+                message:"token not found login again"
+            })
+        }
+        const decoded = decodeToken(token)
+        if(!decoded){
+            return res.status(400).json({
+                success:false,
+                message:"unable to decode token plz login again"
+            })
+        }
+        let user = await User.findById(decoded.id)
+        
+        req.user = user
+        next()
+    } catch (err) {
+        console.log("error in authentation form middleware",err.message)
+        return res.status(400).json({
+            success:false,
+            message:"error in authentation form middleware"
+        })
+    }
+}

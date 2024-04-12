@@ -1,6 +1,8 @@
 import otpGenerator from 'otp-generator'
 import OTP from "../model/otp.js"
 import User from "../model/user.js"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const saltRounds = 7
 
@@ -110,4 +112,74 @@ export const signup = async (req,res) => {
             message: err.massage
         })
     }
+}
+
+const login = async (req,res) =>{
+    try {
+        const {email,password} = req.body
+        if(!email || !password){
+            return res.status(400).json({
+                success: false,
+                massage: "incomplete input"
+            })
+        }
+        let user = await User.findOne({ email: email }).populate('additionalDetails')
+        if(!user) {
+            return res.status(401).json({
+                //Return 401 unauthorized status code with error message
+                success: false,
+                message: `User is not registered with Us, Please signup to Continue`,
+            });
+        }
+        const passwordMatch = await bcrypt.compare(password, user.password)
+        if(passwordMatch){
+            const payLoad = {
+                email: user.email,
+                id: user._id,
+                accountType: user.accountType,
+            }
+            const token = jwt.sign(payLoad, process.env.JWT_SECRET, {
+                expiresIn: '2h',
+            })
+            user.token = token
+            try {
+                await user.save()               
+            } catch (err) {
+                return res.status(400).json({
+                    success: false,
+                    message: "token is not stored in db "
+                })
+            }
+            const options = {
+                expiresIn: new Date(Date.now() + 3*24*60*60*1000),
+                httpOnly: true,
+            }
+            return res.cookie('token', token, options).status(200).json({
+                success: true,
+                token,
+                user,
+                message: `User Login Success`,
+            })
+        }
+        else{
+            return res.status(400).json({
+                success:false,
+                message : "invalid password"
+            })
+        }
+    } catch (err) {
+        console.log('eror in login from auth ')
+    }
+}
+
+export const changePassword = async (req,res) =>{
+    const {oldpassword,newpassword} = req.body
+    let user = req.user
+    if(!oldpassword || !newpassword){
+        return res.status(400).json({
+            success: false,
+            message: "incomplete input for change password"
+        })
+    }
+    
 }
