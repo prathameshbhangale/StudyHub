@@ -15,11 +15,10 @@ function decodeToken(token) {
         }
     }
 }
-
 // token payload = {id, email, accountType}
 // validation part of token
 // either present in cookie or body or authentation
-const auth = async(req,res,next) => {
+export const auth = async(req,res,next) => {
     try {
         let token = req.body || req.cookies.token || req.header('Authorization')
         if(!token){
@@ -46,4 +45,58 @@ const auth = async(req,res,next) => {
             message:"error in authentation form middleware"
         })
     }
+}
+
+export const isStudent = async (req,res,next) => {
+    try {
+		const userDetails = await User.findOne({ email: req.user.email })
+
+		if (userDetails.accountType !== "Student") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Students",
+			})
+		}
+		next()
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ success: false, message: `User Role Can't be Verified` })
+	}
+}
+
+export const isAdmin = async (req,res,next) => {
+    try {
+		const userDetails = await User.findOne({ email: req.user.email })
+
+		if (userDetails.accountType !== "Admin") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Admin",
+			})
+		}
+		next()
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ success: false, message: `User Role Can't be Verified` })
+	}
+}
+
+export const isInstructor = async (req,res,next) => {
+    try {
+		const userDetails = await User.findOne({ email: req.user.email })
+
+		if (userDetails.accountType !== "Instructor") {
+			return res.status(401).json({
+				success: false,
+				message: "This is a Protected Route for Instructor",
+			})
+		}
+		next()
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ success: false, message: `User Role Can't be Verified` })
+	}
 }

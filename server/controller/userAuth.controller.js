@@ -3,8 +3,8 @@ import OTP from "../model/otp.js"
 import User from "../model/user.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
-const saltRounds = 7
+import mailSender from '../utlity/mailSend.js'
+import passwordUpdated from '../maileInterface.js/passwordUpdated.js'
 
 export const sendOTP = async (req,res) => {
     try {
@@ -80,14 +80,14 @@ export const signup = async (req,res) => {
                 message: "OTP is not matching"
             })
         }
-        const hashedPassword = await bcrypt.hash(password, saltRounds)
+        const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUND)
         let approved;
         if(accountType == "student") {
             approved = true
         }else{
             approved=false
         }
-        const profileDetails = await  Profile.create({
+        const profileDetails = await Profile.create({
             gender : null,
             dateOfBirth: null,
             about: null,
@@ -114,7 +114,7 @@ export const signup = async (req,res) => {
     }
 }
 
-const login = async (req,res) =>{
+export const login = async (req,res) =>{
     try {
         const {email,password} = req.body
         if(!email || !password){
@@ -168,18 +168,50 @@ const login = async (req,res) =>{
             })
         }
     } catch (err) {
-        console.log('eror in login from auth ')
+        console.log('error in login from auth ')
     }
 }
 
 export const changePassword = async (req,res) =>{
-    const {oldpassword,newpassword} = req.body
-    let user = req.user
-    if(!oldpassword || !newpassword){
-        return res.status(400).json({
+    try {
+        const {oldpassword,newpassword} = req.body
+        if(!oldpassword || !newpassword){
+            return res.status(400).json({
+                success: false,
+                message: "incomplete input for change password"
+            })
+        }
+        const encryptedPassword = await bcrypt.hash(newPassword,process.env.SALT_ROUND )
+        const updatedUserDetails = await User.findByIdAndUpdate(
+            req.user.id,
+            { password: encryptedPassword },
+            { new: true }
+        )
+        try {
+            const emailResponse = await mailSender(
+            updatedUserDetails.email,
+            "Password for your account has been updated",
+            passwordUpdated(
+                updatedUserDetails.email,
+                `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+            )
+            )
+            console.log("Email sent successfully:", emailResponse.response)
+            return res.status(200).json({ success: true, message: "Password updated successfully" })
+        }catch (error) {
+            console.error("Error occurred while sending email:", error)
+            return res.status(500).json({
             success: false,
-            message: "incomplete input for change password"
-        })
+            message: "Error occurred while sending email",
+            error: error.message,
+            })
+        }
+    } catch (error) {
+        console.error("Error occurred while updating password:", error)
+        return res.status(500).json({
+        success: false,
+        message: "Error occurred while updating password",
+        error: error.message,
+    })
     }
-    
 }
