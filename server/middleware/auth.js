@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 import User from '../model/user.js'
 
 function decodeToken(token) {
@@ -8,43 +8,78 @@ function decodeToken(token) {
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             console.error('Token is expired');
-            return null;
         } else {
             console.error('Error decoding token:', error);
-            return null;
         }
+        return null
     }
 }
 // token payload = {id, email, accountType}
 // validation part of token
 // either present in cookie or body or authentation
-export const auth = async(req,res,next) => {
-    try {
-        let token = req.body || req.cookies.token || req.header('Authorization')
-        if(!token){
-            return res.status(400).json({
-                success:false,
-                message:"token not found login again"
-            })
-        }
-        const decoded = decodeToken(token)
-        if(!decoded){
-            return res.status(400).json({
-                success:false,
-                message:"unable to decode token plz login again"
-            })
-        }
-        let user = await User.findById(decoded.id)
+// export const auth = async(req,res,next) => {
+//     try {
+//         let token = req.body || req.cookies.token || req.header('Authorization')
+//         if(!token){
+//             return res.status(400).json({
+//                 success:false,
+//                 message:"token not found login again"
+//             })
+//         }
+//         const decoded = decodeToken(token)
+//         console.log(decoded)
+//         if(!decoded){
+//             return res.status(400).json({
+//                 success:false,
+//                 message:"unable to decode token plz login again"
+//             })
+//         }
+//         let user = await User.findById(decoded.id)
         
-        req.user = user
-        next()
-    } catch (err) {
-        console.log("error in authentation form middleware",err.message)
-        return res.status(400).json({
-            success:false,
-            message:"error in authentation form middleware"
-        })
-    }
+//         req.user = user
+//         next()
+//     } catch (err) {
+//         console.log("error in authentation form middleware",err.message)
+//         return res.status(400).json({
+//             success:false,
+//             message:"error in authentation form middleware"
+//         })
+//     }
+// }
+
+export const auth = async (req, res, next) => {
+	try {
+		const token =
+			req.cookies.token ||
+			req.body.token ||
+			req.header('Authorization')
+
+		if (!token) {
+			return res.status(401).json({ success: false, message: `Token Missing` });
+		}
+
+		try {
+			// Verifying the JWT using the secret key stored in environment variables
+			const decode = await jwt.verify(token, process.env.JWT_SECRET);
+			console.log(decode);
+			// Storing the decoded JWT payload in the request object for further use
+			req.user = decode;
+		} catch (error) {
+			// If JWT verification fails, return 401 Unauthorized response
+			return res
+				.status(401)
+				.json({ success: false, message: "token is invalid" });
+		}
+
+		// If JWT is valid, move on to the next middleware or request handler
+		next();
+	} catch (error) {
+		// If there is an error during the authentication process, return 401 Unauthorized response
+		return res.status(401).json({
+			success: false,
+			message: `Something Went Wrong While Validating the Token`,
+		});
+	}
 }
 
 export const isStudent = async (req,res,next) => {
