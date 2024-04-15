@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
-import sendMail from "../utlity/mailSend"
+import mailSender from "../utlity/mailSend.js"
+import mailhtml from "../maileInterface.js/otpVarification.js"
 
 const OTPSchema = new mongoose.Schema({
     email: {
@@ -13,14 +14,14 @@ const OTPSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
-        expires: 60 * 5, //The document will be automatically deleted after 5-minutes of its creation
+        expires: 60 * 50, //The document will be automatically deleted after 5-minutes of its creation
     },
 })
 
 OTPSchema.pre('save', async function(next) {
     try {
         console.log('Document is ready to save')
-        await sendMail(this.email, "Verification by Edutech", mailhtml(this.otp))
+        await mailSender(this.email, "Verification by Edutech", mailhtml(this.otp))
         next()
     } catch (error) {
         console.error('Error sending email:', error)

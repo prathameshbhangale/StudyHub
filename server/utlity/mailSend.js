@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 
-let transporter;
-
+// let transporter;
+// 
 // const maileFunctionalityAdd = () => {
 //     try {
 //         transporter = nodemailer.createTransport({
@@ -22,16 +22,16 @@ let transporter;
 const mailSender = async (email, title, body) => {
     try {
       let transporter = nodemailer.createTransport({
-        host: process.env.MAIL_HOST,
+        host: 'smtp.gmail.com',
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
+          user: process.env.EMAIL_ADDRESS,
+          pass: process.env.EMAIL_PASSWORD,
         },
         secure: false,
       })
   
       let info = await transporter.sendMail({
-        from: `"Studynotion | CodeHelp" <${process.env.MAIL_USER}>`, // sender address
+        from: `"Studynotion | CodeHelp" <${process.env.EMAIL_ADDRESS}>`, // sender address
         to: `${email}`, // list of receivers
         subject: `${title}`, // Subject line
         html: `${body}`, // html body
