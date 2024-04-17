@@ -323,13 +323,10 @@ export const login = async (req,res) =>{
 
 export const changePassword = async (req, res) => {
     try {
-      // Get user data from req.user
       const userDetails = await User.findById(req.user.id)
         console.log(2345678)
-      // Get old password, new password, and confirm new password from req.body
       const { oldPassword, newPassword } = req.body
   
-      // Validate old password
       console.log(2345678)
       console.log(oldPassword)
       console.log(userDetails.password)
@@ -338,21 +335,17 @@ export const changePassword = async (req, res) => {
         userDetails.password
       )
       if (!isPasswordMatch) {
-        // If old password does not match, return a 401 (Unauthorized) error
         return res
           .status(401)
           .json({ success: false, message: "The password is incorrect" })
       }
       console.log(2345678)
-      // Update password
       const encryptedPassword = await bcrypt.hash(newPassword, 10)
       const updatedUserDetails = await User.findByIdAndUpdate(
         req.user.id,
         { password: encryptedPassword },
         { new: true }
       )
-  
-      // Send notification email
       try {
         const emailResponse = await mailSender(
           updatedUserDetails.email,
@@ -364,7 +357,6 @@ export const changePassword = async (req, res) => {
         )
         console.log("Email sent successfully:", emailResponse.response)
       } catch (error) {
-        // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
         console.error("Error occurred while sending email:", error)
         return res.status(500).json({
           success: false,
@@ -373,12 +365,10 @@ export const changePassword = async (req, res) => {
         })
       }
   
-      // Return success response
       return res
         .status(200)
         .json({ success: true, message: "Password updated successfully" })
     } catch (error) {
-      // If there's an error updating the password, log the error and return a 500 (Internal Server Error) error
       console.error("Error occurred while updating password:", error)
       return res.status(500).json({
         success: false,

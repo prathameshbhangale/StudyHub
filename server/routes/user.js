@@ -8,4 +8,4 @@ router.post("/signup", signup)
 router.post("/sendOTP", sendOTP)
 router.post("/changePassword",auth, changePassword)
 
-export default router;
+export default router

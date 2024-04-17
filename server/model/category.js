@@ -14,6 +14,7 @@ const categorySchema = new mongoose.Schema({
         ref: "Course",
         },
     ],
+    default:[]
 });
 
 const Category = mongoose.model("Category", categorySchema)
