@@ -15,7 +15,7 @@ exports.createCourse = async (req, res) => {
             status,
             instructions,
         } = req.body
-        const thumbnail = req.files.thumbnailImage;
+        const thumbnail = req.files.thumbnailImage
 
         //validation -> check if any of the required fields are missing
         if(
@@ -59,7 +59,7 @@ exports.createCourse = async (req, res) => {
         const thumbnailImage = await uploadImageToCloudinary(
             thumbnail, 
             process.env.FOLDER_NAME
-        );
+        )
         console.log(thumbnailImage);
         //create an entry for new Course with the given details
         const newCourse = await Course.create ({
@@ -69,7 +69,7 @@ exports.createCourse = async (req, res) => {
             whatYouWillLearn: whatYouWillLearn,
             price,
             tag: tag,
-            Category: categoryDetails._id,
+            category: categoryDetails._id,
             thumbnail: thumbnailImage.secure_url,
             status: status,
             instructions: instructions,
@@ -85,7 +85,7 @@ exports.createCourse = async (req, res) => {
                 }
             },
             {new : true},
-        );
+        )
 
         //Add the new course to the categories
         await Category.findByIdAndUpdate(
