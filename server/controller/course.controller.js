@@ -258,7 +258,6 @@ export const getFullCourseDetails = async (req, res) => {
 }
 }
   
-  // Get a list of Course for a given Instructor
 export const getInstructorCourses = async (req, res) => {
 try {
     const instructorId = req.user.id
@@ -280,7 +279,7 @@ try {
     })
 }
 }
-// Delete the Course
+
 exports.deleteCourse = async (req, res) => {
 try {
     const { courseId } = req.body
