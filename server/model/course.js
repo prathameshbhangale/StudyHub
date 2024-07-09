@@ -57,7 +57,7 @@ const coursesSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        Date: Date.now
+        Date: Date.now()
     }
 });
 
