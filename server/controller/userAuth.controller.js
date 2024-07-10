@@ -17,7 +17,7 @@ export const sendOTP = async (req,res) => {
         if(user){
             return res.status(401).json({
                 success : false,
-                massage: "user not exist with given email",
+                massage: "user already exist with given email",
             })
         }
         let otp = otpGenerator.generate(6, { 

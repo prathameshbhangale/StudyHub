@@ -16,7 +16,7 @@ app.use(cookieParser())
 app.use('/user',userRouter)
 
 app.get('/', (req, res) => {
-  res.send('Hello, world! This is your Express.js application.');
+  res.send('syudy hub application.');
 })
 
 app.listen(port, () => {
