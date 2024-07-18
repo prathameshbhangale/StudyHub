@@ -7,8 +7,10 @@ import bodyParser from 'body-parser'
 import { cloudinaryConnect } from './config/cloudinary.js'
 import profileRouter from "./routes/profile.js"
 import courseRouter from "./routes/course.js"
+import fileUpload from 'express-fileupload'
 
 dotenv.config();
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,6 +20,12 @@ cloudinaryConnect()
 
 app.use(bodyParser.json())
 app.use(cookieParser())
+
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/tmp/'
+}));
+
 app.use('/user',userRouter)
 app.use('/profile', profileRouter)
 app.use('/course',courseRouter)

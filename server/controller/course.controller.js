@@ -22,9 +22,14 @@ export const createCourse = async (req, res) => {
             status,
             instructions,
         } = req.body
-        const thumbnail = req.files.thumbnailImage
-
+        let thumbnail = req.files
+        thumbnail = thumbnail.image
+        console.log(thumbnail)
+        price = Number(price)
+        thumbnail = thumbnail.tempFilePath
+        // const thumbnail = req.files
         //validation -> check if any of the required fields are missing
+        
         if(
             !courseName || 
             !courseDescription || 
@@ -54,21 +59,26 @@ export const createCourse = async (req, res) => {
                 Message: 'Instructor Details Not Found',
             });
         }
-        const categoryDetails = await Category.findById(category);
+        // const categoryDetails = await Category.findById(category);
+        let categoryDetails = await Category.find({
+            name: 'python'  // or whatever category name you're looking for
+          });
+        console.log("\n\n\ndetails : ",categoryDetails[0])
+          
         if(!categoryDetails) {
             return res.status(404).json({
                 success: false,
                 message: 'Category Details Not Found',
             })
         }
-
         //Upload thumbnail Image to Cloudinary
         const thumbnailImage = await uploadImageToCloudinary(
             thumbnail, 
             process.env.FOLDER_NAME
         )
-        console.log(thumbnailImage);
+        console.log(thumbnailImage)
         //create an entry for new Course with the given details
+        console.log(123)
         const newCourse = await Course.create ({
             courseName,
             courseDescription,
@@ -76,14 +86,14 @@ export const createCourse = async (req, res) => {
             whatYouWillLearn: whatYouWillLearn,
             price,
             tag: tag,
-            category: categoryDetails._id,
+            category: categoryDetails[0]._id,
             thumbnail: thumbnailImage.secure_url,
             status: status,
             instructions: instructions,
         });
-
+        let temp;
         //add the new Course to the user schema of instructor
-        await User.findByIdAndUpdate(
+        temp = await User.findByIdAndUpdate(
 
             {_id: instructorDetails._id},
             {
@@ -96,7 +106,7 @@ export const createCourse = async (req, res) => {
 
         //Add the new course to the categories
         await Category.findByIdAndUpdate(
-            { _id: category },
+            { _id: categoryDetails[0]._id },
             {
                 $push: {
                     course: newCourse._id,
