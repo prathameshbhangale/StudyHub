@@ -2,12 +2,12 @@ import mongoose from 'mongoose'
 
 const courseProgress = new mongoose.Schema({
     courseID : {
-        type : mongoose.SchemaType.Types.ObjectId,
+        type : mongoose.Schema.Types.ObjectId,
         ref: "Course",
     }, 
     completedVideos : [
         {
-            type : mongoose.SchemaType.Types.ObjectId,
+            type : mongoose.Schema.Types.ObjectId,
             ref : "SubSection"
         }
     ]

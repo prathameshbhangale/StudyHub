@@ -4,6 +4,9 @@ import connectDB from "./config/database.js"
 import cookieParser from 'cookie-parser'
 import userRouter from "./routes/user.js"
 import bodyParser from 'body-parser'
+import { cloudinaryConnect } from './config/cloudinary.js'
+import profileRouter from "./routes/profile.js"
+import courseRouter from "./routes/course.js"
 
 dotenv.config();
 
@@ -11,12 +14,16 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 connectDB()
+cloudinaryConnect()
+
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use('/user',userRouter)
+app.use('/profile', profileRouter)
+app.use('/course',courseRouter)
 
 app.get('/', (req, res) => {
-  res.send('syudy hub application.');
+  res.send('study hub application.');
 })
 
 app.listen(port, () => {
