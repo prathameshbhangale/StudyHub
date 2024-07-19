@@ -7,7 +7,6 @@ import SubSection from "../model/subSection.js";
 import CourseProgress from "../model/courseProgress.js";
 import { ObjectId } from "mongodb";
 
-//TODO: Add pagination
 
 const convertSecondsToDuration = (seconds) => {
     if (seconds < 0) throw new Error('Seconds must be a non-negative number');
