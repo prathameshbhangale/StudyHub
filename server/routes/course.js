@@ -1,10 +1,16 @@
 import express from 'express'
 import { createCategory , showAllCategories , categoryPageDetails } from '../controller/category.controller.js';
 import { auth,isAdmin,isStudent,isInstructor } from '../middleware/auth.js'
-import { createCourse,
+
+import { 
+    createCourse,
     getCourseDetails
  } from '../controller/course.controller.js';
-import { createSection } from '../controller/Section.controller.js';
+
+import { 
+    createSection,
+    updateSection
+ } from '../controller/Section.controller.js';
 const router = express.Router()
 
 // category routes
@@ -18,6 +24,7 @@ router.get("/getCourseDetails",getCourseDetails)  // pending
 
 // section and sub section
 router.post("/addSection", auth, isInstructor, createSection)
+router.post("/updateSection", auth, isInstructor, updateSection)
 
 // for Rating and Review
 
