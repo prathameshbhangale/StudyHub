@@ -25,7 +25,7 @@ router.get("/showAllCategories", showAllCategories)
 
 // Course routers
 router.post("/createCourse", auth, isInstructor, createCourse)
-router.get("/getCourseDetails",getCourseDetails)  // pending 
+router.get("/getCourseDetails",getCourseDetails) 
 
 // section and sub section
 router.post("/addSection", auth, isInstructor, createSection)
