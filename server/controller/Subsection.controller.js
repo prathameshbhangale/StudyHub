@@ -15,7 +15,7 @@ export const createSubSection = async (req, res) => {
       console.log(video)
    
       const uploadDetails = await uploadImageToCloudinary(
-        video,
+        video.tempFilePath,
         process.env.FOLDER_NAME
       )
       console.log(uploadDetails) 

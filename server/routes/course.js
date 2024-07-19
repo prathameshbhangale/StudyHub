@@ -10,7 +10,11 @@ import {
 import { 
     createSection,
     updateSection
- } from '../controller/Section.controller.js';
+} from '../controller/Section.controller.js';
+
+import { createSubSection } from '../controller/Subsection.controller.js';
+
+
 const router = express.Router()
 
 // category routes
@@ -25,6 +29,8 @@ router.get("/getCourseDetails",getCourseDetails)  // pending
 // section and sub section
 router.post("/addSection", auth, isInstructor, createSection)
 router.post("/updateSection", auth, isInstructor, updateSection)
+router.post("/addSubSection", auth, isInstructor, createSubSection)
+
 
 // for Rating and Review
 
