@@ -137,6 +137,7 @@ export const createCourse = async (req, res) => {
 export const getCourseDetails = async (req, res) => {
     try {
       const { courseId } = req.body
+      console.log("data accepted")
       const courseDetails = await Course.findOne({
         _id: courseId,
       })
