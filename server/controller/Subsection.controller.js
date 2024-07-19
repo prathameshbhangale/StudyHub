@@ -65,7 +65,7 @@ export const updateSubSection = async (req, res) => {
       if (req.files && req.files.video !== undefined) {
         const video = req.files.video
         const uploadDetails = await uploadImageToCloudinary(
-          video,
+          video.tempFilePath,
           process.env.FOLDER_NAME
         )
         subSection.videoUrl = uploadDetails.secure_url

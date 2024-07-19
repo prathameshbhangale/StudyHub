@@ -9,6 +9,20 @@ import { ObjectId } from "mongodb";
 
 //TODO: Add pagination
 
+const convertSecondsToDuration = (seconds) => {
+    if (seconds < 0) throw new Error('Seconds must be a non-negative number');
+
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    const hoursStr = hours > 0 ? `${hours}h ` : '';
+    const minutesStr = minutes > 0 ? `${minutes}m ` : '';
+    const secsStr = `${secs}s`;
+
+    return `${hoursStr}${minutesStr}${secsStr}`.trim();
+}
+
 export const createCourse = async (req, res) => {
     try {
         const userId = req.user.id
@@ -148,7 +162,7 @@ export const getCourseDetails = async (req, res) => {
           },
         })
         .populate("category")
-        .populate("ratingAndReviews")
+        // .populate("ratingAndReviews")
         .populate({
           path: "courseContent",
           populate: {
@@ -164,7 +178,7 @@ export const getCourseDetails = async (req, res) => {
           message: `Could not find course with id: ${courseId}`,
         })
       }
-  
+      console.log(courseDetails)
       // if (courseDetails.status === "Draft") {
       //   return res.status(403).json({
       //     success: false,

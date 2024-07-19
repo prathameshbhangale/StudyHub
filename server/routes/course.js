@@ -9,10 +9,11 @@ import {
 
 import { 
     createSection,
-    updateSection
+    updateSection,
+    deleteSection
 } from '../controller/Section.controller.js';
 
-import { createSubSection } from '../controller/Subsection.controller.js';
+import { createSubSection , updateSubSection , deleteSubSection} from '../controller/Subsection.controller.js';
 
 
 const router = express.Router()
@@ -30,7 +31,9 @@ router.get("/getCourseDetails",getCourseDetails)  // pending
 router.post("/addSection", auth, isInstructor, createSection)
 router.post("/updateSection", auth, isInstructor, updateSection)
 router.post("/addSubSection", auth, isInstructor, createSubSection)
-
+router.post("/updateSubSection", auth, isInstructor, updateSubSection)
+router.post("/deleteSubSection", auth, isInstructor, deleteSubSection)
+router.post("/deleteSection", auth, isInstructor, deleteSection)
 
 // for Rating and Review
 
