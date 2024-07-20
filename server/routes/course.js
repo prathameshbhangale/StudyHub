@@ -4,7 +4,8 @@ import { auth,isAdmin,isStudent,isInstructor } from '../middleware/auth.js'
 
 import { 
     createCourse,
-    getCourseDetails
+    getCourseDetails,
+    getInstructorCourses
  } from '../controller/course.controller.js';
 
 import { 
@@ -26,6 +27,7 @@ router.get("/showAllCategories", showAllCategories)
 // Course routers
 router.post("/createCourse", auth, isInstructor, createCourse)
 router.get("/getCourseDetails",getCourseDetails) 
+router.get("/getInstructorCourses",auth, isInstructor,getInstructorCourses) 
 
 // section and sub section
 router.post("/addSection", auth, isInstructor, createSection)

@@ -146,7 +146,6 @@ export const createCourse = async (req, res) => {
     }
 };
 
-
 export const getCourseDetails = async (req, res) => {
     try {
       const { courseId } = req.body
