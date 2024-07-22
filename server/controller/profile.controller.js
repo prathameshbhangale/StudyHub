@@ -109,8 +109,10 @@ export const getAllUserDetails = async (req, res) => {
 
 export const updateDisplayPicture = async (req, res) => {
     try {
-      const displayPicture = req.files.displayPicture
+      let displayPicture = req.files.displayPicture
       const userId = req.user.id
+      displayPicture = displayPicture.tempFilePath
+      // console.log(displayPicture)
       const image = await uploadImageToCloudinary(
         displayPicture,
         process.env.FOLDER_NAME,
@@ -226,4 +228,4 @@ export const instructorDashboard = async (req, res) => {
       console.error(error)
       res.status(500).json({ message: "Server Error" })
     }
-  }
+}

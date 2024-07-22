@@ -9,10 +9,12 @@ import {
  } from '../middleware/auth.js'
 import { 
     getAllUserDetails ,
-    updateProfile
+    updateProfile,
+    updateDisplayPicture
  } from '../controller/profile.controller.js'
 
- router.put("/updateProfile",auth,updateProfile)
+router.put("/updateProfile",auth,updateProfile)
 router.get("/getAllUserDetails",auth,getAllUserDetails)
+router.put("/updateDisplayPicture",auth,updateDisplayPicture)
 
 export default router
