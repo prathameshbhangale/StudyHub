@@ -33,3 +33,44 @@ export async function sendOtp(email, navigate,dispatch){
     dispatch(setLoading(false))
     toast.dismiss(id)
 }
+
+export async function signUp(
+    accountType,
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPassword,
+    otp,
+    navigate,
+    dispatch
+){
+    const toastId = toast.loading("Loading...")
+    dispatch(setLoading(true))
+    try {
+        console.log(SIGNUP_API)
+    const response = await apiConnector("POST", SIGNUP_API, {
+        accountType,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        otp,
+    })
+
+    console.log("SIGNUP API RESPONSE............", response)
+
+    if (!response.data.success) {
+        throw new Error(response.data.message)
+    }
+    toast.success("Signup Successful")
+    navigate("/login")
+    } catch (error) {
+        console.log("SIGNUP API ERROR............", error)
+        toast.error("Signup Failed")
+        navigate("/signup")
+    }
+    dispatch(setLoading(false))
+    toast.dismiss(toastId)
+}
