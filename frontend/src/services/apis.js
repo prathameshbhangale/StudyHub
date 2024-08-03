@@ -5,3 +5,11 @@ export const categories = {
     
     CATEGORIES_API: BASE_URL + "/course/showAllCategories",
 }
+
+export const endpoints = {
+    SENDOTP_API: BASE_URL + "/user/sendOTP",
+    SIGNUP_API: BASE_URL + "",
+    LOGIN_API: BASE_URL + "",
+    RESETPASSTOKEN_API: BASE_URL + "",
+    RESETPASSWORD_API: BASE_URL + "",
+  }
