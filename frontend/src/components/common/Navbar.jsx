@@ -9,6 +9,7 @@ import { categories } from '../../services/apis'
 import { BASE_URL } from '../../services/apis'
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
 import { useSelector } from 'react-redux'
+import { ACCOUNT_TYPE } from '../../enums/constants'
 
 function Navbar() {
 
@@ -127,7 +128,7 @@ function Navbar() {
               </button>
             </Link>
           )}
-          {token !== null && <ProfileDropdown />}
+          {/* {token !== null && <ProfileDropdown />} */}
         </div>
         <button className="mr-4 md:hidden">
           <AiOutlineMenu fontSize={24} fill="#AFB2BF" />

@@ -5,6 +5,7 @@ import Navbar from './components/common/Navbar'
 import OpenRoute from './components/core/Auth/OpenRoute'
 import Signup from './pages/Signup'
 import VerifyEmail from './pages/VerifyEmail'
+import Login from './pages/Login'
 
 function App() {
 
@@ -27,6 +28,15 @@ function App() {
           element={
             <OpenRoute>
               <VerifyEmail />
+            </OpenRoute>
+          }
+        />
+
+        <Route
+          path="login"
+          element={
+            <OpenRoute>
+              <Login />
             </OpenRoute>
           }
         />
