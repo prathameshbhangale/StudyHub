@@ -7,6 +7,8 @@ import Signup from './pages/Signup'
 import VerifyEmail from './pages/VerifyEmail'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
+import UpdatePassword from './pages/UpdatePassword'
+
 function App() {
 
   return (
@@ -46,6 +48,15 @@ function App() {
           element={
             <OpenRoute>
               <ForgotPassword />
+            </OpenRoute>
+          }
+        />
+
+        <Route
+          path="update-password/:id"
+          element={
+            <OpenRoute>
+              <UpdatePassword />
             </OpenRoute>
           }
         />

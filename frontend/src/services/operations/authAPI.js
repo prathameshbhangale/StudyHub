@@ -111,7 +111,6 @@ export async function login(email, password, navigate , dispatch) {
 export function logout(navigate , dispatch) {
     dispatch(setToken(null))
     dispatch(setUser(null))
-    // dispatch(resetCart())
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     toast.success("Logged Out")
@@ -137,6 +136,24 @@ export async function getPasswordResetToken(email, setEmailSent,dispatch){
     }catch(error){
         console.log("RESETPASSTOKEN ERROR............", error)
         toast.error("Failed To Send Reset Email")
+    }
+    dispatch(setLoading(false))
+    toast.dismiss(toastId)
+}
+
+export async function resetPassword(password, confirmPassword, token, navigate, dispatch){
+    dispatch(setLoading(true))
+    const toastId = toast.loading("Loading...")
+    try {
+        const response = await apiConnector("POST",RESETPASSWORD_API,{password, confirmPassword, token})
+        if (!response.data.success) {
+            throw new Error(response.data.message)
+        }
+        toast.success("Password Reset Successfully")
+        navigate("/login")
+    } catch (error) {
+        console.log("Reset passeord...",error)
+        toast.error("Failed To Reset password")
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
