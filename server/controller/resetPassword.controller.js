@@ -2,6 +2,9 @@ import User from '../model/user.js'
 import mailSender from '../utlity/mailSend.js'
 import bcrypt from "bcrypt"
 
+import crypto from 'crypto'
+
+
 export const resetPasswordToken = async (req, res) => {
   try {
     const email = req.body.email
@@ -24,8 +27,7 @@ export const resetPasswordToken = async (req, res) => {
     )
     console.log("DETAILS", updatedDetails)
 
-    const url = `http://localhost:3000/update-password/${token}`
-    // const url = `https://studynotion-edtech-project.vercel.app/update-password/${token}`
+    const url = `http://localhost:5173/update-password/${token}`
 
     await mailSender(
       email,
@@ -37,6 +39,7 @@ export const resetPasswordToken = async (req, res) => {
       success: true,
       message:
         "Email Sent Successfully, Please Check Your Email to Continue Further",
+      token : token,
     })
   } catch (error) {
     return res.json({

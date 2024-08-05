@@ -322,10 +322,8 @@ export const login = async (req,res) =>{
 export const changePassword = async (req, res) => {
     try {
       const userDetails = await User.findById(req.user.id)
-        console.log(2345678)
       const { oldPassword, newPassword } = req.body
   
-      console.log(2345678)
       console.log(oldPassword)
       console.log(userDetails.password)
       const isPasswordMatch = await bcrypt.compare(
