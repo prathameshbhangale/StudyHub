@@ -8,6 +8,7 @@ import VerifyEmail from './pages/VerifyEmail'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import UpdatePassword from './pages/UpdatePassword'
+import About from './pages/About'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
       <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route
           path="/signup"
           element={
