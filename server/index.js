@@ -10,6 +10,7 @@ import courseRouter from "./routes/course.js"
 import fileUpload from 'express-fileupload'
 // import cors
 import cors from "cors"
+import contact from "./routes/contactus.js"
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use(fileUpload({
 
 app.use('/user',userRouter)
 app.use('/profile', profileRouter)
+app.use('/reach',contact)
 app.use('/course',courseRouter)
 
 app.get('/', (req, res) => {

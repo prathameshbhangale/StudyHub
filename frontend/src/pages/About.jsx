@@ -5,6 +5,7 @@ import BannerImage2 from "../assets/Images/aboutus2.webp"
 import BannerImage3 from "../assets/Images/aboutus3.webp"
 import FoundingStory from "../assets/Images/FoundingStory.png"
 import Quote from '../components/core/AboutPage/Quote'
+import Footer from '../components/common/Footer'
 
 function About() {
   return (
@@ -89,6 +90,7 @@ function About() {
             </div>
           </div>
         </section>
+        <Footer></Footer>
   </div>
   )
 }
