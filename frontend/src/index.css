@@ -29,3 +29,39 @@ body {
   100% {transform: rotate(1turn)}
 }
 }
+
+.lable-style {
+  color: #e0e0e0; /* Light gray text */
+  background-color: #000000; /* Black background */
+  /* border: 2px solid #d4af37; Golden-yellow border */
+  padding: 8px 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.form-style {
+  color: #ffffff; /* White text color */
+  background-color: #1a1a1a; /* Dark gray background */
+  border: 2px solid #d4af37; /* Golden-yellow border */
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  width: 100%;
+}
+
+.form-style:focus {
+  border-color: #f4c430; /* Bright golden border on focus */
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.7); /* Subtle glow effect */
+}
+
+.form-style::placeholder {
+  color: #cccccc; /* Light gray placeholder text */
+  opacity: 0.7;
+}
+
+.form-style:disabled {
+  background-color: #333333; /* Darker background when disabled */
+  cursor: not-allowed;
+}

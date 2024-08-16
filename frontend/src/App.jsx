@@ -9,6 +9,7 @@ import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import UpdatePassword from './pages/UpdatePassword'
 import About from './pages/About'
+import Contact from './pages/Contact'
 
 function App() {
 
@@ -59,6 +60,15 @@ function App() {
           element={
             <OpenRoute>
               <UpdatePassword />
+            </OpenRoute>
+          }
+        />
+
+        <Route
+          path="contact"
+          element={
+            <OpenRoute>
+              <Contact />
             </OpenRoute>
           }
         />
