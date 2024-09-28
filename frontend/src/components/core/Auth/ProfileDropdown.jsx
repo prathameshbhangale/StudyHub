@@ -12,9 +12,9 @@ function ProfileDropdown() {
     // console.log(profile.user)
     const user = profile.user
     let image = `https://api.dicebear.com/5.x/initials/svg?seed=${user?.firstName} ${user?.lastName}`
-    if(user.image){
-        image = user.image
-    }
+    // if(!user.image){
+        // image = user.image
+    // }
     const handleLogout = () => {
         logout(navigate, dispatch)
     }
