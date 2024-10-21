@@ -6,7 +6,8 @@ import {
     createCourse,
     getCourseDetails,
     getInstructorCourses,
-    getFullCourseDetails
+    getFullCourseDetails,
+    deleteCourse
  } from '../controller/course.controller.js';
 
 import { 
@@ -30,6 +31,7 @@ router.post("/createCourse", auth, isInstructor, createCourse)
 router.get("/getfullCourseDetails",auth,getFullCourseDetails) 
 router.get("/getCourseDetails",getCourseDetails) 
 router.get("/getInstructorCourses",auth, isInstructor,getInstructorCourses) 
+router.get("/deletecourse",auth, isInstructor,deleteCourse) 
 
 // section and sub section
 router.post("/addSection", auth, isInstructor, createSection)

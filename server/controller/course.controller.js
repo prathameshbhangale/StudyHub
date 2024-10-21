@@ -75,8 +75,6 @@ export const createCourse = async (req, res) => {
         let categoryDetails = await Category.find({
             name: category
         });
-        console.log("\n\n\ndetails aodfivm;ksadjf ;sakjfv kaj : ",categoryDetails)
-          
         if(!categoryDetails) {
             return res.status(404).json({
                 success: false,
@@ -119,25 +117,23 @@ export const createCourse = async (req, res) => {
             },
             {new : true},
         )
-        await Category.findByIdAndUpdate(
-            { _id: categoryDetails[0]._id },
+        let z = await Category.findByIdAndUpdate(
+            categoryDetails[0]._id,
             {
                 $push: {
-                    course: newCourse._id,
+                    courses: newCourse._id,
                 },
             },
             { new : true }
         );
-
-        //Return the new course and a success message
         res.status(200).json({
             success: true,
             data: newCourse,
+            cat: z,
             message: "Course Created Successfully",
         });
 
     } catch(error) {
-        //Handle any errors that occur during the creation of the course
         console.log(error);
         return res.status(500).json({
             success: false,
@@ -323,15 +319,16 @@ export const deleteCourse = async (req, res) => {
         }
 
         const courseSections = course.courseContent
+        
         for (const sectionId of courseSections) {
-        const section = await Section.findById(sectionId)
-        if (section) {
-            const subSections = section.subSection
-            for (const subSectionId of subSections) {
-            await SubSection.findByIdAndDelete(subSectionId)
+            const section = await Section.findById(sectionId)
+            if (section) {
+                const subSections = section.subSection
+                for (const subSectionId of subSections) {
+                    await SubSection.findByIdAndDelete(subSectionId)
+                }
             }
-        }
-        await Section.findByIdAndDelete(sectionId)
+            await Section.findByIdAndDelete(sectionId)
         }
 
         await Course.findByIdAndDelete(courseId)
