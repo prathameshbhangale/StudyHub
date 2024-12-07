@@ -2,9 +2,10 @@ import { useState } from "react"
 import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-
 import { sidebarLinks } from "../../../data/dashboard-links"
+import SidebarLink from './SidebarLink.jsx'
 import { logout } from "../../../services/operations/authAPI"
+import ConfirmationModal from "../../common/ConfirmationModal.jsx"
 
 
 export default function Sidebar() {
@@ -14,7 +15,6 @@ export default function Sidebar() {
     const { loading: authLoading } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // to keep track of confirmation modal
     const [confirmationModal, setConfirmationModal] = useState(null)
   
     if (profileLoading || authLoading) {
@@ -62,7 +62,7 @@ export default function Sidebar() {
             </button>
           </div>
         </div>
-        {/* {confirmationModal && <ConfirmationModal modalData={confirmationModal} />} */}
+        {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
       </>
     )
   }
